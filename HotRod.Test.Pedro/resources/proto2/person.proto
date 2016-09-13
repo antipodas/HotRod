@@ -1,0 +1,24 @@
+﻿package quickstart;
+
+
+/**
+ * @Indexed(true)
+ * @TypeId(42)
+ */
+message User {
+
+   /**
+    * @IndexedField(index=true, store=true)
+    */
+   required int32 id = 1;
+
+   /**
+    * @IndexedField
+    */
+   required string name = 2;
+
+   /**
+    * @IndexedField
+    */
+   required string surname = 3;
+}
