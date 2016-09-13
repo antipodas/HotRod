@@ -5,7 +5,7 @@
  * @Indexed(true)
  * @TypeId(42)
  */
-message User {
+message Person {
 
    /**
     * @IndexedField(index=true, store=true)
@@ -21,4 +21,9 @@ message User {
     * @IndexedField
     */
    required string surname = 3;
+
+   /**
+    * @IndexedField
+    */
+   required string age = 4;
 }

@@ -1,11 +1,9 @@
 ﻿using Google.Protobuf;
 using Infinispan.HotRod;
 using Infinispan.HotRod.Config;
-using Infinispan.HotRod.Impl;
 using Org.Infinispan.Protostream;
 using Org.Infinispan.Query.Remote.Client;
 using Pedro.Test.Hotrod;
-using SampleBankAccount;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,34 +45,65 @@ namespace HotRod.Test.Pedro
 
             testCache.Clear();
             // Fill the application cache
-            Person person1 = new Person();
-            person1.Id = 4;
-            person1.Name = "Jerry";
-            person1.Surname = "Mouse";
-            testCache.Put(4, person1);
 
-
+            Person user1 = new Person();
+            user1.Id = 4;
+            user1.FirstName = "Jerry";
+            user1.Surname = "Mouse";
+            Person ret = testCache.Put(4, user1);
+            //putPersons(testCache);
 
             // Run a query
             QueryRequest qr = new QueryRequest();
-            qr.JpqlString = "from quickstart.Person";
+            qr.JpqlString = "from quickstart.Person where name like '%ou%'";
             QueryResponse result = testCache.Query(qr);
 
-            Console.WriteLine(result.NumResults);
 
             List<Person> listOfUsers = new List<Person>();
-            if (unwrapResults(result, listOfUsers))
-            {
-                Console.WriteLine("It's not empty");
-            }
+         
+            
+            unwrapResults(result, listOfUsers);
             Console.WriteLine("There are " + listOfUsers.Count + " Users:");
 
-            Console.WriteLine("did it finished?????");
-
-            Thread.Sleep(2000);
+            foreach (Person user in listOfUsers)
+            {
+                Console.WriteLine(user.ToString());
+                System.Threading.Thread.Sleep(1000);
+            }
+            System.Threading.Thread.Sleep(5000);
 
         }
+        private static void putPersons(IRemoteCache<int, Person> cache)
+        {
+            Console.WriteLine(">>> Loading persons");
+            string[] firstNames = File.ReadAllLines(@"..\..\First_Names.csv", Encoding.UTF8);
+            string[] lastNames = File.ReadAllLines(@"..\..\Last_Names.csv", Encoding.UTF8);
+            int key = 0;
 
+            foreach (string lastName in lastNames)
+            {
+                foreach (string firstName in firstNames)
+                {
+                    Random randomAge = new Random();
+
+                    //IDictionary<Int64, Person> persons= new Dictionary<Int64,Person>();
+                    //persons.Add(key, new Person { Name = lastName, Age = randomAge.Next(120), FirstName = firstName });
+                    cache.Put(key, new Person { Id = key, FirstName = firstName, Surname = lastName, Age = randomAge.Next(120) });
+
+                    key++;
+                    if ((key % 100000) == 0)
+                    {
+                        Console.WriteLine("  " + key);
+
+                        if (key == 1000000)
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+            Console.WriteLine(">>> Loading persons DONE");
+        }
         // Convert Protobuf matter into C# objects
         private static bool unwrapResults<T>(QueryResponse resp, List<T> res) where T : IMessage<T>
         {
@@ -89,6 +118,7 @@ namespace HotRod.Test.Pedro
                 if (wm.WrappedBytes != null)
                 {
                     WrappedMessage wmr = WrappedMessage.Parser.ParseFrom(wm.WrappedBytes);
+
                     if (wmr.WrappedMessageBytes != null)
                     {
 

@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="First_Names.csv" />
+    <None Include="Last_Names.csv" />
     <None Include="resources\proto2\person.proto" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

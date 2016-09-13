@@ -7,15 +7,19 @@ namespace HotRod.Test.Pedro
     internal class Person : IMessage<Person>
     {
         public int Id;
-        public string Name;
+        public string FirstName;
         public string Surname;
-        private Person person;
+        public int Age;
+        private static readonly MessageParser<Person> _parser = new MessageParser<Person>(() => new Person());
+
+        public static MessageParser<Person> Parser { get { return _parser; } }
 
         public Person()
         {
             this.Id = -1;
-            this.Name = "";
+            this.FirstName = "";
             this.Surname = "";
+            this.Age = -1;
         }
 
         public MessageDescriptor Descriptor
@@ -33,13 +37,17 @@ namespace HotRod.Test.Pedro
             {
                 num += 1 + CodedOutputStream.ComputeInt32Size(this.Id);
             }
-            if (this.Name.Length > 0)
+            if (this.FirstName.Length > 0)
             {
-                num += 1 + CodedOutputStream.ComputeStringSize(this.Name);
+                num += 1 + CodedOutputStream.ComputeStringSize(this.FirstName);
             }
             if (this.Surname.Length > 0)
             {
                 num += 1 + CodedOutputStream.ComputeStringSize(this.Surname);
+            }
+            if (this.Age > 0)
+            {
+                num += 1 + CodedOutputStream.ComputeInt32Size(this.Age);
             }
             return num;
 
@@ -62,7 +70,11 @@ namespace HotRod.Test.Pedro
                 {
                     return false;
                 }
-                if (this.Name != other.Name)
+                if (this.Age != other.Age)
+                {
+                    return false;
+                }
+                if (this.FirstName != other.FirstName)
                 {
                     return false;
                 }
@@ -82,16 +94,19 @@ namespace HotRod.Test.Pedro
             {
                 switch (num)
                 {
-                    case 0x1a:
-                        this.Name = input.ReadString();
+                    case 26:
+                        this.FirstName = input.ReadString();
                         break;
 
-                    case 0x22:
+                    case 18:
                         this.Surname = input.ReadString();
                         break;
 
                     case 8:
                         this.Id = input.ReadInt32();
+                        break;
+                    case 34:
+                        this.Age = input.ReadInt32();
                         break;
 
                     default:
@@ -109,9 +124,13 @@ namespace HotRod.Test.Pedro
                 {
                     this.Id = other.Id;
                 }
-                if (other.Name.Length > 0)
+                if (other.Age > 0)
                 {
-                    this.Name = other.Name;
+                    this.Age = other.Age;
+                }
+                if (other.FirstName.Length > 0)
+                {
+                    this.FirstName = other.FirstName;
                 }
                 if (other.Surname.Length > 0)
                 {
@@ -127,56 +146,74 @@ namespace HotRod.Test.Pedro
                 output.WriteRawTag(8);
                 output.WriteInt32(this.Id);
             }
-            if (this.Name.Length > 0)
+            if (this.FirstName.Length > 0)
             {
-                output.WriteRawTag(0x1a);
-                output.WriteString(this.Name);
+                output.WriteRawTag(18);
+                output.WriteString(this.Surname);
             }
             if (this.Surname.Length > 0)
             {
-                output.WriteRawTag(0x22);
-                output.WriteString(this.Surname);
+                output.WriteRawTag(26);
+                output.WriteString(this.FirstName);
+            }
+            if (this.Age > 0)
+            {
+                output.WriteRawTag(34);
+                output.WriteInt32(this.Age);
+
             }
 
         }
 
-             public String getName()
+             public string GetName()
         {
-            return Name;
+            return FirstName;
         }
 
-        public void setSurname(String surname)
+        public void SetSurname(String surname)
         {
             this.Surname = surname;
         }
 
-        public String getSurname()
+        public String GetSurname()
         {
             return Surname;
         }
 
-        public void setName(String name)
+        public void SetName(String name)
         {
-            this.Name = name;
+            this.FirstName = name;
         }
 
-        public int getId()
+        public int GetId()
         {
             return Id;
         }
 
-        public void setId(int id)
+        public void SetId(int id)
         {
             this.Id = id;
         }
 
-        public String toString()
+        public int GetAge()
         {
-            return "Person{" +
-                  "id=" + Id +
-                  ", name='" + Name +
-                  "', surname='" + Surname + '\'' +
-                  '}';
+            return Age;
+        }
+
+        public void SetAge(int age)
+        {
+            this.Age = age;
+        }
+
+        public override string ToString()
+        {
+            return "#####################\n" +
+                  "User ID: " + this.Id + "\n" +
+                  "Firstname: " + this.FirstName + "\n" +
+                  "Surname: " + this.Surname + "\n" +
+                  "Age: " + this.Age + "\n" +
+                  "#####################\n"
+                  ;
         }
 
     }
