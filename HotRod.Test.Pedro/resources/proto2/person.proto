@@ -12,19 +12,18 @@ message Person {
     */
    required int32 id = 1;
 
+   /**
+    * @IndexedField
+    */
+   required string age = 2;
+
     /**
     * @IndexedField
     */
-   required string surname = 2;
+   required string surname = 3;
 
    /**
     * @IndexedField
     */
-   required string name = 3;
-
-
-   /**
-    * @IndexedField
-    */
-   required string age = 4;
+   required string name = 4;
 }

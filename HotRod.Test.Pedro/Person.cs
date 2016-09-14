@@ -9,7 +9,7 @@ namespace HotRod.Test.Pedro
         public int Id;
         public string FirstName;
         public string Surname;
-        public int Age;
+        public string Age;
         private static readonly MessageParser<Person> _parser = new MessageParser<Person>(() => new Person());
 
         public static MessageParser<Person> Parser { get { return _parser; } }
@@ -19,7 +19,7 @@ namespace HotRod.Test.Pedro
             this.Id = -1;
             this.FirstName = "";
             this.Surname = "";
-            this.Age = -1;
+            this.Age = "";
         }
 
         public MessageDescriptor Descriptor
@@ -37,6 +37,10 @@ namespace HotRod.Test.Pedro
             {
                 num += 1 + CodedOutputStream.ComputeInt32Size(this.Id);
             }
+            if (this.Age.Length > 0)
+            {
+                num += 1 + CodedOutputStream.ComputeStringSize(this.Age);
+            }
             if (this.FirstName.Length > 0)
             {
                 num += 1 + CodedOutputStream.ComputeStringSize(this.FirstName);
@@ -45,10 +49,7 @@ namespace HotRod.Test.Pedro
             {
                 num += 1 + CodedOutputStream.ComputeStringSize(this.Surname);
             }
-            if (this.Age > 0)
-            {
-                num += 1 + CodedOutputStream.ComputeInt32Size(this.Age);
-            }
+
             return num;
 
         }
@@ -94,19 +95,19 @@ namespace HotRod.Test.Pedro
             {
                 switch (num)
                 {
-                    case 26:
+                    case 34:
                         this.FirstName = input.ReadString();
                         break;
 
-                    case 18:
+                    case 26:
                         this.Surname = input.ReadString();
                         break;
 
                     case 8:
                         this.Id = input.ReadInt32();
                         break;
-                    case 34:
-                        this.Age = input.ReadInt32();
+                    case 18:
+                        this.Age = input.ReadString();
                         break;
 
                     default:
@@ -124,17 +125,17 @@ namespace HotRod.Test.Pedro
                 {
                     this.Id = other.Id;
                 }
-                if (other.Age > 0)
+                if (other.Age.Length > 0)
                 {
                     this.Age = other.Age;
-                }
-                if (other.FirstName.Length > 0)
-                {
-                    this.FirstName = other.FirstName;
                 }
                 if (other.Surname.Length > 0)
                 {
                     this.Surname = other.Surname;
+                }
+                if (other.FirstName.Length > 0)
+                {
+                    this.FirstName = other.FirstName;
                 }
             }
         }
@@ -146,22 +147,25 @@ namespace HotRod.Test.Pedro
                 output.WriteRawTag(8);
                 output.WriteInt32(this.Id);
             }
-            if (this.FirstName.Length > 0)
+            if (this.Age.Length > 0)
             {
                 output.WriteRawTag(18);
-                output.WriteString(this.Surname);
+                output.WriteString(this.Age);
+
             }
+
             if (this.Surname.Length > 0)
             {
                 output.WriteRawTag(26);
-                output.WriteString(this.FirstName);
+                output.WriteString(this.Surname);
             }
-            if (this.Age > 0)
+
+            if (this.FirstName.Length > 0)
             {
                 output.WriteRawTag(34);
-                output.WriteInt32(this.Age);
-
+                output.WriteString(this.FirstName);
             }
+           
 
         }
 
@@ -195,12 +199,12 @@ namespace HotRod.Test.Pedro
             this.Id = id;
         }
 
-        public int GetAge()
+        public string GetAge()
         {
             return Age;
         }
 
-        public void SetAge(int age)
+        public void SetAge(string age)
         {
             this.Age = age;
         }
