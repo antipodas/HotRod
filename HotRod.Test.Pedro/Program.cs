@@ -46,18 +46,18 @@ namespace HotRod.Test.Pedro
             testCache.Clear();
             // Fill the application cache
 
-           // Person user1 = new Person();
-           // user1.Id = 4;
-           // user1.FirstName = "Jerry";
-          // user1.Surname = "Mouse";
-          //  user1.Age = "3";
-          //  Person ret = testCache.Put(4, user1);
+            //Person user1 = new Person();
+            //user1.Id = 4;
+            //user1.FirstName = "Jerry";
+           //user1.Surname = "Mouse";
+            //user1.Age = 3;
+            //Person ret = testCache.Put(4, user1);
             putPersons(testCache);
 
             // Run a query
             QueryRequest qr = new QueryRequest();
-            qr.JpqlString = "from quickstart.Person where surname like '%ou%'";
-           //qr.JpqlString = "from quickstart.Person";
+           // qr.JpqlString = "from quickstart.Person where surname like '%ou%'";
+           qr.JpqlString = "from quickstart.Person";
             QueryResponse result = testCache.Query(qr);
 
 
@@ -90,7 +90,7 @@ namespace HotRod.Test.Pedro
 
                     //IDictionary<Int64, Person> persons= new Dictionary<Int64,Person>();
                     //persons.Add(key, new Person { Name = lastName, Age = randomAge.Next(120), FirstName = firstName });
-                    cache.Put(key, new Person { Id = key, FirstName = firstName, Surname = lastName });
+                    cache.Put(key, new Person { Id = key, FirstName = firstName, Surname = lastName, Age = randomAge.Next(120) });
 
                     key++;
                     if ((key % 100000) == 0)

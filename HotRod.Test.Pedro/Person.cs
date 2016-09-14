@@ -9,7 +9,7 @@ namespace HotRod.Test.Pedro
         public int Id;
         public string FirstName;
         public string Surname;
-        public string Age;
+        public int Age;
         private static readonly MessageParser<Person> _parser = new MessageParser<Person>(() => new Person());
 
         public static MessageParser<Person> Parser { get { return _parser; } }
@@ -19,7 +19,7 @@ namespace HotRod.Test.Pedro
             this.Id = -1;
             this.FirstName = "";
             this.Surname = "";
-            this.Age = "";
+            this.Age = -1;
         }
 
         public MessageDescriptor Descriptor
@@ -37,9 +37,9 @@ namespace HotRod.Test.Pedro
             {
                 num += 1 + CodedOutputStream.ComputeInt32Size(this.Id);
             }
-            if (this.Age.Length > 0)
+            if (this.Age > 0)
             {
-                num += 1 + CodedOutputStream.ComputeStringSize(this.Age);
+                num += 1 + CodedOutputStream.ComputeInt32Size(this.Age);
             }
             if (this.FirstName.Length > 0)
             {
@@ -53,6 +53,8 @@ namespace HotRod.Test.Pedro
             return num;
 
         }
+
+
 
         public Person Clone()
         {
@@ -106,8 +108,8 @@ namespace HotRod.Test.Pedro
                     case 8:
                         this.Id = input.ReadInt32();
                         break;
-                    case 18:
-                        this.Age = input.ReadString();
+                    case 16:
+                        this.Age = input.ReadInt32();
                         break;
 
                     default:
@@ -125,7 +127,7 @@ namespace HotRod.Test.Pedro
                 {
                     this.Id = other.Id;
                 }
-                if (other.Age.Length > 0)
+                if (other.Age > 0)
                 {
                     this.Age = other.Age;
                 }
@@ -147,10 +149,10 @@ namespace HotRod.Test.Pedro
                 output.WriteRawTag(8);
                 output.WriteInt32(this.Id);
             }
-            if (this.Age.Length > 0)
+            if (this.Age > 0)
             {
-                output.WriteRawTag(18);
-                output.WriteString(this.Age);
+                output.WriteRawTag(16);
+                output.WriteInt32(this.Age);
 
             }
 
@@ -199,12 +201,12 @@ namespace HotRod.Test.Pedro
             this.Id = id;
         }
 
-        public string GetAge()
+        public int GetAge()
         {
             return Age;
         }
 
-        public void SetAge(string age)
+        public void SetAge(int age)
         {
             this.Age = age;
         }

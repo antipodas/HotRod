@@ -13,9 +13,9 @@ message Person {
    required int32 id = 1;
 
    /**
-    * @IndexedField
+    * @IndexedField()
     */
-   required string age = 2;
+   required int32 age = 2;
 
     /**
     * @IndexedField
