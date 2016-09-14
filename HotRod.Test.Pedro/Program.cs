@@ -50,12 +50,13 @@ namespace HotRod.Test.Pedro
             user1.Id = 4;
             user1.FirstName = "Jerry";
             user1.Surname = "Mouse";
+           // user1.Age = 22;
             Person ret = testCache.Put(4, user1);
             //putPersons(testCache);
 
             // Run a query
             QueryRequest qr = new QueryRequest();
-            qr.JpqlString = "from quickstart.Person where name like '%ou%'";
+            qr.JpqlString = "from quickstart.Person where surname like '%ou%'";
             QueryResponse result = testCache.Query(qr);
 
 
