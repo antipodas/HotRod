@@ -221,6 +221,5 @@ namespace HotRod.Test.Pedro
                   "#####################\n"
                   ;
         }
-
     }
 }

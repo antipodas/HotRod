@@ -15,7 +15,6 @@ namespace Pedro.Test.Hotrod
             throw new NotImplementedException();
         }
 
-
         public object ObjectFromByteBuffer(byte[] buf)
         {
             base_types bt = base_types.Parser.ParseFrom(buf);
@@ -96,10 +95,6 @@ namespace Pedro.Test.Hotrod
             cos.Flush();
             return bytes;
         }
-
-
-
-
         public byte[] ObjectToByteBuffer(object obj, int estimatedSize)
         {
             throw new NotImplementedException();

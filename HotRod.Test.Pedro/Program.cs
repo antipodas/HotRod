@@ -46,12 +46,6 @@ namespace HotRod.Test.Pedro
             testCache.Clear();
             // Fill the application cache
 
-            //Person user1 = new Person();
-            //user1.Id = 4;
-            //user1.FirstName = "Jerry";
-           //user1.Surname = "Mouse";
-            //user1.Age = 3;
-            //Person ret = testCache.Put(4, user1);
             putPersons(testCache);
 
             // Run a query
