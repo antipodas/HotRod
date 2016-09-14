@@ -7,7 +7,6 @@
  */
 message Person {
 
-
    /**
     * @IndexedField(index=true, store=true)
     */

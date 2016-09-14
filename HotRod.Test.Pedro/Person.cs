@@ -170,47 +170,6 @@ namespace HotRod.Test.Pedro
            
 
         }
-
-             public string GetName()
-        {
-            return FirstName;
-        }
-
-        public void SetSurname(String surname)
-        {
-            this.Surname = surname;
-        }
-
-        public String GetSurname()
-        {
-            return Surname;
-        }
-
-        public void SetName(String name)
-        {
-            this.FirstName = name;
-        }
-
-        public int GetId()
-        {
-            return Id;
-        }
-
-        public void SetId(int id)
-        {
-            this.Id = id;
-        }
-
-        public int GetAge()
-        {
-            return Age;
-        }
-
-        public void SetAge(int age)
-        {
-            this.Age = age;
-        }
-
         public override string ToString()
         {
             return "#####################\n" +

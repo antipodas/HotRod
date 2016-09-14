@@ -50,8 +50,7 @@ namespace HotRod.Test.Pedro
 
             // Run a query
             QueryRequest qr = new QueryRequest();
-           // qr.JpqlString = "from quickstart.Person where surname like '%ou%'";
-           qr.JpqlString = "from quickstart.Person";
+            qr.JpqlString = "from quickstart.Person where surname like '%ou%'";
             QueryResponse result = testCache.Query(qr);
 
 
